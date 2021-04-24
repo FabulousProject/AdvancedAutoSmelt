@@ -5,7 +5,6 @@ import me.pulsi_.advancedautosmelt.managers.DataManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +13,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
 
 public class FortuneSupport implements Listener {
 
@@ -83,6 +85,10 @@ public class FortuneSupport implements Listener {
         if (isAutoPickupEnabled && blackList.contains(type)) return;
 
         if (type.contains("FURNACE") || type.contains("SHULKER") || type.contains("CHEST") || type.contains("HOPPER")) return;
+        if (type.equals("IRON_ORE") || type.equals("GOLD_ORE")) {
+            checkFNuggetSystem(e);
+            return;
+        }
 
         if (useWhitelist) {
             if (whitelist.contains(e.getBlock().getType().toString())) {
@@ -105,6 +111,10 @@ public class FortuneSupport implements Listener {
             }
         }
         removeDrops(e);
+    }
+
+    private void checkFNuggetSystem(BlockBreakEvent event) {
+        // TODO: 25.04.2021
     }
 
     private void check(Player player, BlockBreakEvent event, int amount) {

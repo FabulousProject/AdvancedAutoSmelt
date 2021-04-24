@@ -2,11 +2,12 @@ package me.pulsi_.advancedautosmelt;
 
 import me.pulsi_.advancedautosmelt.autopickup.AutoPickupExp;
 import me.pulsi_.advancedautosmelt.autopickup.AutoPickupExpCustom;
+import me.pulsi_.advancedautosmelt.commands.Commands;
+import me.pulsi_.advancedautosmelt.commands.TabCompletion;
 import me.pulsi_.advancedautosmelt.events.blocks.ChestBreak;
 import me.pulsi_.advancedautosmelt.events.blocks.EnderChestBreak;
 import me.pulsi_.advancedautosmelt.events.blocks.FurnaceBreak;
 import me.pulsi_.advancedautosmelt.events.features.AutoPickSmelt;
-import me.pulsi_.advancedautosmelt.commands.Commands;
 import me.pulsi_.advancedautosmelt.events.features.BlockBreakSmeltInv;
 import me.pulsi_.advancedautosmelt.events.features.InvFullAlert;
 import me.pulsi_.advancedautosmelt.events.supports.FortuneSupport;
@@ -14,7 +15,6 @@ import me.pulsi_.advancedautosmelt.events.supports.SilkTouchSupport;
 import me.pulsi_.advancedautosmelt.managers.DataManager;
 import me.pulsi_.advancedautosmelt.managers.Metrics;
 import me.pulsi_.advancedautosmelt.managers.UpdateChecker;
-import me.pulsi_.advancedautosmelt.commands.TabCompletion;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class AdvancedAutoSmelt extends JavaPlugin {
