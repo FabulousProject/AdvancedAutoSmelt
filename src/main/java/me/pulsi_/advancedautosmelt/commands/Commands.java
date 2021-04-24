@@ -40,13 +40,13 @@ public class Commands implements CommandExecutor {
 
         if (args.length == 0) {
             s.sendMessage(Translator.c(""));
-            s.sendMessage(Translator.c("&8&l<&d&lAdvanced&a&lAuto&c&lSmelt&8&l> &bv%v%, By Pulsi_").replace("%v%", version));
+            s.sendMessage(Translator.c("&8&l<&d&lToplayıcı&8&l>").replace("%v%", version));
             s.sendMessage(Translator.c(""));
 
         } else if (args.length == 1 && args[0].equalsIgnoreCase("help")) {
             if (s.hasPermission("advancedautosmelt.help")) {
                 s.sendMessage(Translator.c(""));
-                s.sendMessage(Translator.c("&d  &lAdvanced&a&lAuto&c&lSmelt &aHelp"));
+                s.sendMessage(Translator.c("&d  &lToplayıcı &aHelp"));
                 s.sendMessage(Translator.c(""));
                 s.sendMessage(Translator.c("&8- &c/AdvancedAutoSmelt Reload &7Reload the Plugin"));
                 s.sendMessage(Translator.c("&8- &c/AdvancedAutoSmelt Help &7Send this help message"));
