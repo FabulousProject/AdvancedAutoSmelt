@@ -68,50 +68,39 @@ public class InvFullAlert implements Listener {
         if (noAlert.contains(p.getName())) return;
         if (p.getInventory().firstEmpty() >= 0) return;
 
-        //Title
         if (useTitle) {
             try {
                 p.sendTitle(Translator.c(title), Translator.c(subTitle), fadein, stay, fadeout);
             } catch (NoSuchMethodError err) {
                 p.sendTitle(Translator.c(title), Translator.c(subTitle));
             }
-            //Title
-
-            //ActionBar
-            if (useActionBar) {
-                try {
-                    p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Translator.c(actionbarMessage)));
-                } catch (NoSuchMethodError err) {
-                    Bukkit.getConsoleSender().sendMessage(Translator.c("&8&l<&d&lAdvanced&a&lAuto&c&lSmelt&8&l> &cSorry! But the ActionBar doesn't work in " + plugin.getServer().getVersion()));
-                }
+        } else if (useActionBar) {
+            try {
+                p.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(Translator.c(actionbarMessage)));
+            } catch (NoSuchMethodError err) {
+                Bukkit.getConsoleSender().sendMessage(Translator.c("&8&l<&d&lAdvanced&a&lAuto&c&lSmelt&8&l> &cSorry! But the ActionBar doesn't work in " + plugin.getServer().getVersion()));
             }
-            //ActionBar
+        } else if (useMessages) {
+            for (String messages : invFullMessages)
+                p.sendMessage(ChatColor.translateAlternateColorCodes('&', messages));
+        }
 
-            //Messages
-            if (useMessages) {
-                for (String messages : invFullMessages)
-                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', messages));
-            }
-            //Messages
-
-            //Sound
-            if (useSound) {
-                try {
-                    p.playSound(p.getLocation(), Sound.valueOf(sound), volume, pitch);
-                } catch (Exception exc) {
-                    Bukkit.getConsoleSender().sendMessage(Translator.c("&8&l<&d&lAdvanced&a&lAuto&c&lSmelt&8&l> &cThe sound for the InventoryFull Sound is invalid!"));
-                }
-            }
-            //Sound
-
-            if (alertDelay != 0) {
-                noAlert.add(p.getName());
-                new BukkitRunnable() {
-                    public void run() {
-                        noAlert.remove(p.getName());
-                    }
-                }.runTaskLater(plugin, alertDelay);
+        if (useSound) {
+            try {
+                p.playSound(p.getLocation(), Sound.valueOf(sound), volume, pitch);
+            } catch (Exception exc) {
+                Bukkit.getConsoleSender().sendMessage(Translator.c("&8&l<&d&lAdvanced&a&lAuto&c&lSmelt&8&l> &cThe sound for the InventoryFull Sound is invalid!"));
             }
         }
+
+        if (alertDelay != 0) {
+            noAlert.add(p.getName());
+            new BukkitRunnable() {
+                public void run() {
+                    noAlert.remove(p.getName());
+                }
+            }.runTaskLater(plugin, alertDelay);
+        }
+
     }
 }
