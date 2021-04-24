@@ -5,6 +5,7 @@ import me.pulsi_.advancedautosmelt.managers.DataManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -13,10 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class FortuneSupport implements Listener {
 
@@ -71,110 +69,58 @@ public class FortuneSupport implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreakFortune(BlockBreakEvent e) {
-        Player p = e.getPlayer();
-        System.out.println("blist " + blackList);
-
-        if (disabledWorlds.contains(p.getWorld().getName())) return;
-        if (isAutoPickupEnabled && blackList.contains(e.getBlock().getType().toString()))
-            return;
-
         if (e.isCancelled()) return;
         if (!isEFS) return;
-        if (e.getBlock().getType() == Material.CHEST || e.getBlock().getType() == Material.FURNACE || e.getBlock().getType() == Material.ENDER_CHEST) return;
+
+        Player p = e.getPlayer();
+        String type = e.getBlock().getType().toString();
+
+        System.out.println("blist " + blackList);
+
         if (!(p.hasPermission("advancedautosmelt.fortune"))) return;
-        if (isDCM) {if (p.getGameMode().equals(GameMode.CREATIVE)) return;}
+        if (isDCM && p.getGameMode().equals(GameMode.CREATIVE)) return;
+        if (disabledWorlds.contains(p.getWorld().getName())) return;
+        if (isAutoPickupEnabled && blackList.contains(type)) return;
+
+        if (type.contains("FURNACE") || type.contains("SHULKER") || type.contains("CHEST") || type.contains("HOPPER")) return;
 
         if (useWhitelist) {
             if (whitelist.contains(e.getBlock().getType().toString())) {
-
                 if (p.getInventory().getItemInHand().containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
                     int fortuneLevel = p.getInventory().getItemInHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
-
-                    Random r = new Random();
-                    int min = 1;
-                    int multiply = r.nextInt((fortuneLevel - min) + 1) + min;
-                    for (ItemStack drops : e.getBlock().getDrops()) {
-                        drops.setAmount(multiply);
-
-                        if (isAutoPickupEnabled) {
-                            if (!autoPickupOFF.contains(p.getName())) {
-                                dropsItems(p, drops, e.getBlock().getLocation());
-                            } else {
-                                p.getWorld().dropItem(e.getBlock().getLocation().clone(), drops);
-                            }
-                        } else {
-                           p.getWorld().dropItem(e.getBlock().getLocation(), drops);
-                        }
-                    }
-
+                    check(p, e, new Random().nextInt((fortuneLevel - 1) + 1) + 1);
                 } else {
-
-                    for (ItemStack drops : e.getBlock().getDrops()) {
-
-                        if (isAutoPickupEnabled) {
-                            if (!autoPickupOFF.contains(p.getName())) {
-                                dropsItems(p, drops, e.getBlock().getLocation());
-                            } else {
-                                p.getWorld().dropItem(e.getBlock().getLocation().clone(), drops);
-                            }
-                        } else {
-                            p.getWorld().dropItem(e.getBlock().getLocation(), drops);
-                        }
-                    }
+                    check(p, e, -1);
                 }
             } else {
-                for (ItemStack drops : e.getBlock().getDrops()) {
-
-                    if (isAutoPickupEnabled) {
-                        if (!autoPickupOFF.contains(p.getName())) {
-                            dropsItems(p, drops, e.getBlock().getLocation());
-                        } else {
-                            p.getWorld().dropItem(e.getBlock().getLocation().clone(), drops);
-                        }
-                    } else {
-                        p.getWorld().dropItem(e.getBlock().getLocation(), drops);
-                    }
-                }
+                check(p, e, -1);
             }
 
         } else {
-
             if (p.getInventory().getItemInHand().containsEnchantment(Enchantment.LOOT_BONUS_BLOCKS)) {
                 int fortuneLevel = p.getInventory().getItemInHand().getEnchantmentLevel(Enchantment.LOOT_BONUS_BLOCKS);
-
-                Random r = new Random();
-                int min = 1;
-                int multiply = r.nextInt((fortuneLevel - min) + 1) + min;
-                for (ItemStack drops : e.getBlock().getDrops()) {
-                    drops.setAmount(multiply);
-
-                    if (isAutoPickupEnabled) {
-                        if (!autoPickupOFF.contains(p.getName())) {
-                            dropsItems(p, drops, e.getBlock().getLocation());
-                        } else {
-                            p.getWorld().dropItem(e.getBlock().getLocation().clone(), drops);
-                        }
-                    } else {
-                        p.getWorld().dropItem(e.getBlock().getLocation(), drops);
-                    }
-                }
+                check(p, e, new Random().nextInt((fortuneLevel - 1) + 1) + 1);
             } else {
-                for (ItemStack drops : e.getBlock().getDrops()) {
-
-                    if (isAutoPickupEnabled) {
-                        if (!autoPickupOFF.contains(p.getName())) {
-                            dropsItems(p, drops, e.getBlock().getLocation());
-                        } else {
-                            p.getWorld().dropItem(e.getBlock().getLocation().clone(), drops);
-                        }
-                    } else {
-                        p.getWorld().dropItem(e.getBlock().getLocation(), drops);
-                    }
-                }
+                check(p, e, -1);
             }
         }
         removeDrops(e);
     }
 
+    private void check(Player player, BlockBreakEvent event, int amount) {
+        for (ItemStack drop : event.getBlock().getDrops()) {
+            drop.setAmount(amount == -1 ? drop.getAmount() : amount);
+
+            if (isAutoPickupEnabled) {
+                if (!autoPickupOFF.contains(player.getName())) {
+                    dropsItems(player, drop, event.getBlock().getLocation());
+                } else {
+                    player.getWorld().dropItem(event.getBlock().getLocation().clone(), drop);
+                }
+            } else {
+                player.getWorld().dropItem(event.getBlock().getLocation().clone(), drop);
+            }
+        }
+    }
 
 }
