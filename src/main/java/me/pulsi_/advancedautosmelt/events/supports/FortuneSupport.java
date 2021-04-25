@@ -6,6 +6,7 @@ import me.pulsi_.advancedautosmelt.managers.DataManager;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Statistic;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -83,7 +84,9 @@ public class FortuneSupport implements Listener {
         if (!(p.hasPermission("advancedautosmelt.fortune"))) return;
         if (isDCM && p.getGameMode().equals(GameMode.CREATIVE)) return;
         if (disabledWorlds.contains(p.getWorld().getName())) return;
+        System.out.println("b1");
         if (isAutoPickupEnabled && blackList.contains(type)) return;
+        System.out.println("b2");
 
         if (type.contains("FURNACE") || type.contains("SHULKER") || type.contains("CHEST") || type.contains("HOPPER")) return;
         if (type.equals("IRON_ORE") || type.equals("GOLD_ORE")) {
@@ -111,6 +114,7 @@ public class FortuneSupport implements Listener {
                 check(p, e, -1);
             }
         }
+        p.setStatistic(Statistic.MINE_BLOCK, e.getBlock().getType(), p.getStatistic(Statistic.MINE_BLOCK, e.getBlock().getType()) + 1);
         removeDrops(e);
     }
 
