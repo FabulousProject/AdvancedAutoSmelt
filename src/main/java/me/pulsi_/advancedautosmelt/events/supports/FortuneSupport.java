@@ -1,5 +1,6 @@
 package me.pulsi_.advancedautosmelt.events.supports;
 
+import me.alpho320.fabulous.orenuggets.NuggetAPI;
 import me.pulsi_.advancedautosmelt.commands.Commands;
 import me.pulsi_.advancedautosmelt.managers.DataManager;
 import org.bukkit.GameMode;
@@ -86,7 +87,7 @@ public class FortuneSupport implements Listener {
 
         if (type.contains("FURNACE") || type.contains("SHULKER") || type.contains("CHEST") || type.contains("HOPPER")) return;
         if (type.equals("IRON_ORE") || type.equals("GOLD_ORE")) {
-            checkFNuggetSystem(e);
+            checkFNuggetSystem(e, !autoPickupOFF.contains(p.getName()));
             return;
         }
 
@@ -113,8 +114,8 @@ public class FortuneSupport implements Listener {
         removeDrops(e);
     }
 
-    private void checkFNuggetSystem(BlockBreakEvent event) {
-        // TODO: 25.04.2021
+    private void checkFNuggetSystem(BlockBreakEvent event, boolean autopickup) {
+        NuggetAPI.checkNuggets(event, autopickup);
     }
 
     private void check(Player player, BlockBreakEvent event, int amount) {

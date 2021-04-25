@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'me.pulsi_'
-version = '2.7.7'
+version = '2.7.8'
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
@@ -24,6 +24,7 @@ repositories {
 
 dependencies {
     implementation 'org.jetbrains:annotations:20.1.0'
+    compileOnly files('/lib/FabulousOreNuggets-1.0.11.jar')
     compileOnly 'org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT'
 }
 

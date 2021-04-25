@@ -4,7 +4,9 @@ main: me.pulsi_.advancedautosmelt.AdvancedAutoSmelt
 api-version: 1.13
 prefix: < AdvancedAutoSmelt >
 load: STARTUP
-authors: [ Pulsi_ ]
+authors: [ Pulsi_, Alpho320#9202 ]
+softdepend:
+  - FabulousOreNuggets
 description: Allow you to smelt ores simply mining! It has an autopickup support to! And much more!!
 commands:
   advancedautosmelt:
