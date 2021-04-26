@@ -84,9 +84,7 @@ public class FortuneSupport implements Listener {
         if (!(p.hasPermission("advancedautosmelt.fortune"))) return;
         if (isDCM && p.getGameMode().equals(GameMode.CREATIVE)) return;
         if (disabledWorlds.contains(p.getWorld().getName())) return;
-        System.out.println("b1");
         if (isAutoPickupEnabled && blackList.contains(type)) return;
-        System.out.println("b2");
 
         if (type.contains("FURNACE") || type.contains("SHULKER") || type.contains("CHEST") || type.contains("HOPPER")) return;
         if (type.equals("IRON_ORE") || type.equals("GOLD_ORE")) {
