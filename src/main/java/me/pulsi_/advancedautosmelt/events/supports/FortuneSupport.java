@@ -91,6 +91,7 @@ public class FortuneSupport implements Listener {
         if (type.contains("FURNACE") || type.contains("SHULKER") || type.contains("CHEST") || type.contains("HOPPER")) return;
         if (type.equals("IRON_ORE") || type.equals("GOLD_ORE")) {
             checkFNuggetSystem(e, !autoPickupOFF.contains(p.getName()));
+            p.setStatistic(Statistic.MINE_BLOCK, e.getBlock().getType(), p.getStatistic(Statistic.MINE_BLOCK, e.getBlock().getType()) + 1);
             return;
         }
 
