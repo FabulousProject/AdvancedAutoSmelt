@@ -79,7 +79,7 @@ public class FortuneSupport implements Listener {
         Player p = e.getPlayer();
         String type = e.getBlock().getType().toString();
 
-        System.out.println("blist " + blackList);
+        //System.out.println("blist " + blackList);
 
         if (!(p.hasPermission("advancedautosmelt.fortune"))) return;
         if (isDCM && p.getGameMode().equals(GameMode.CREATIVE)) return;
